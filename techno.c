@@ -17,7 +17,7 @@ static int64_t COUNTER_CURR = 0;
 int
 my_repl_handler(FILE *fp, PyObject *filename, PyCompilerFlags *flags)
 {
-	COUNTER_PREV = COUNTER_CURR;
+    COUNTER_PREV = COUNTER_CURR;
     int result = PyRun_InteractiveOneObject(fp, filename, flags);
     printf("Frames evaluated: %d\n", COUNTER_CURR - COUNTER_PREV);
     COUNTER_PREV = COUNTER_CURR = 0;
