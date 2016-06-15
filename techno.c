@@ -1,30 +1,47 @@
 #include "Python.h"
+#include <stdint.h>
 
 
 line_runner current_line_runner;
 line_runner original_line_runner;
 
 
-int counter = 0;
+frame_evaluator current_frame_evaluator;
+frame_evaluator original_frame_evaluator;
+
+
+static int64_t COUNTER_PREV = 0;
+static int64_t COUNTER_CURR = 0;
 
 
 int
-my_function(FILE *fp, PyObject *filename, PyCompilerFlags *flags)
+my_repl_handler(FILE *fp, PyObject *filename, PyCompilerFlags *flags)
 {
-    printf("COUNTER: %d\n", counter);
-    counter++;
-    return PyRun_InteractiveOneObject(fp, filename, flags);
+	COUNTER_PREV = COUNTER_CURR;
+    int result = PyRun_InteractiveOneObject(fp, filename, flags);
+    printf("Frames evaluated: %d\n", COUNTER_CURR - COUNTER_PREV);
+    COUNTER_PREV = COUNTER_CURR = 0;
+    return result;
+}
+
+PyObject *
+my_evaluator(struct _frame *f, int exc)
+{
+	COUNTER_CURR++;
+    return PyEval_EvalFrameEx(f, exc);
 }
 
 
 PyObject *init_hack(PyObject *self){
-    current_line_runner = &my_function;
+    current_line_runner = &my_repl_handler;
+    current_frame_evaluator = &my_evaluator;
     return Py_None;
 }
 
 
 PyObject *reset_hack(PyObject *self){
     current_line_runner = original_line_runner;
+    current_frame_evaluator = original_frame_evaluator;
     return Py_None;
 }
 
@@ -64,5 +81,6 @@ PyInit_techno(void)
 {
     PyObject *module = PyModule_Create(&techno);
     original_line_runner = current_line_runner;
+    original_frame_evaluator= current_frame_evaluator;
     return module;
 }
