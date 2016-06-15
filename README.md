@@ -22,16 +22,26 @@ Frames evaluated: 1
 Frames evaluated: 5301
 >>> import code  # cached, so no need to invoke import machinery this time
 Frames evaluated: 1
->>> def factorial(value):
-...    return 1 if not value else factorial(value-1)*value
-... 
+>>> import functools
 Frames evaluated: 1
+>>> @functools.lru_cache(maxsize=None)
+... def factorial(value):
+...    return 1 if not value else value * factorial(value-1)
+... 
+Frames evaluated: 4
 >>> factorial(10)
 3628800
 Frames evaluated: 12
+>>> factorial(10)  # use lru cache for great good!) 
+3628800
+Frames evaluated: 1
 >>> class A(): pass  # class contruction actually evaluates code inside
 ... 
 Frames evaluated: 2
+>>> import collections
+Frames evaluated: 1
+>>> Point = collections.namedtuple("Point", ("x", "y", "z"))  # codegenerations stuff consumes evaluator's time
+Frames evaluated: 15
 >>> a = A()  # A.__new__ defined in C, so there is nothing pythonish to eval
 Frames evaluated: 1
 >>> some_gen = (value**2 for value in range(10))
