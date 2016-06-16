@@ -1,4 +1,4 @@
-# Techno
+# Techno ⛐
 
 This tiny C extension tends to be a simple "code injection" example. It introduces a frame counter, that become available in REPL.
 In order to install it, you will need a "code injection friendly" version of CPython interpreter, just build [7768bbc6e2769db9e8861ffc269b72f3709a5b11](https://github.com/magniff/cpython/tree/7768bbc6e2769db9e8861ffc269b72f3709a5b11)
