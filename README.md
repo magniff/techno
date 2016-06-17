@@ -1,10 +1,10 @@
 # Techno ⛐
 
-This tiny C extension tends to be a simple "code injection" example. It introduces a frame counter, that become available in REPL.
-In order to install it, you will need a "code injection friendly" version of CPython interpreter, just build [7768bbc6e2769db9e8861ffc269b72f3709a5b11](https://github.com/magniff/cpython/tree/7768bbc6e2769db9e8861ffc269b72f3709a5b11)
+This tiny C extension tends to be a simple "code injection" example. It introduces a frame counter, that become available in REPL session.
+In order to install it, you will need a "code injection friendly" version of CPython interpreter, just build one from this commit [7768bbc6e2769db9e8861ffc269b72f3709a5b11](https://github.com/magniff/cpython/tree/7768bbc6e2769db9e8861ffc269b72f3709a5b11)
 
 ## How to run, you might ask
-Ones you have built CPython from commit above, you may install the extension as usual:
+Ones you have successfully compiled (and tested `python -m test`) CPython from commit above, you may install the extension as usual:
 ```bash
 python setup.py install
 ```
